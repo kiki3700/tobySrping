@@ -2,18 +2,31 @@ package tobySpring.user.test;
 
 import java.sql.SQLException;
 
-import tobySpring.user.dao.ConnectionMaker;
-import tobySpring.user.dao.DConnectionMaker;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import tobySpring.user.dao.DaoFactory;
 import tobySpring.user.dao.UserDao;
 import tobySpring.user.domain.User;
 
 public class DaoTest {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {		
-		UserDao dao = new DaoFactory().userDao();
+/*
+ * config 방식 의존성 주입
+ */
+				ApplicationContext context =
+				new AnnotationConfigApplicationContext(DaoFactory.class);
 		
+	/*
+	 * xml식 의존성 주입
+	 */
+//		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+		UserDao dao = context.getBean("userDao", UserDao.class);
 		User user = new User();
-		user.setId("kiki3700");
+		
+
+		
+		user.setId("1234");
 		user.setName("이성현");
 		user.setPassword("lolo5050");
 		dao.add(user);
@@ -25,6 +38,6 @@ public class DaoTest {
 		System.out.println(user2.getPassword());
 		
 		System.out.println(user2.getId()+" 조회 성공");
-		
+
 	}
 }
